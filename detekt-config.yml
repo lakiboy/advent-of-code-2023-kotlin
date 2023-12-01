@@ -1,3 +1,6 @@
+formatting:
+  MaximumLineLength:
+    maxLineLength: 140
 style:
   MagicNumber:
     active: false

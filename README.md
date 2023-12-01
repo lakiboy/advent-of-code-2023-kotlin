@@ -6,6 +6,6 @@ My solutions (WIP) for the [Advent of Code 2023](https://adventofcode.com/2023) 
 
 ## Puzzles
 
-| Day | Title | Task                                        | Input                                | Solution                                               | Test                                                     |
-|-----|-------|---------------------------------------------|--------------------------------------|--------------------------------------------------------|----------------------------------------------------------|
-| 1   | XXX   | [Docs](https://adventofcode.com/2023/day/1) | [Text](src/main/resources/day01.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day01.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day01Test.kt) |
+| Day | Title       | Task                                        | Input                                | Solution                                               | Test                                                     |
+|-----|-------------|---------------------------------------------|--------------------------------------|--------------------------------------------------------|----------------------------------------------------------|
+| 1   | Trebuchet?! | [Docs](https://adventofcode.com/2023/day/1) | [Text](src/main/resources/day01.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day01.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day01Test.kt) |
