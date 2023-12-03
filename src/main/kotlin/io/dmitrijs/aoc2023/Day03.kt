@@ -40,8 +40,10 @@ class Day03(private val input: List<String>) {
                 val p = Point(x, y)
                 if (p.isDigit) {
                     number += p.value
-                    if (!append && p.validNeighbours().any { it.isChar }) append = true
-                    p.validNeighbours().filter { it.isGear }.forEach { currentGears.add(it) }
+                    p.validNeighbours().filter { it.isChar }.forEach {
+                        append = true
+                        if (it.isGear) currentGears.add(it)
+                    }
                 }
                 if ((!p.isDigit || p.x == maxX) && number.isNotEmpty()) {
                     if (append && currentGears.isNotEmpty()) {
