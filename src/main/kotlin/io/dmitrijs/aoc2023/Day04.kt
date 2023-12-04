@@ -1,14 +1,12 @@
 package io.dmitrijs.aoc2023
 
-import kotlin.math.pow
-
 class Day04(private val input: List<String>) {
     fun puzzle1() = input.map { it.toPoints() }.sumOf { points ->
-        if (points > 0) 2.toDouble().pow(points - 1).toLong() else 0L
+        if (points > 0) 1 shl (points - 1) else 0
     }
 
-    fun puzzle2(): Long {
-        val copies = MutableList(input.size) { 1L }
+    fun puzzle2(): Int {
+        val copies = MutableList(input.size) { 1 }
 
         return input.mapIndexed { index, line ->
             val r = index + 1..(index + line.toPoints()).coerceAtMost(input.size)
