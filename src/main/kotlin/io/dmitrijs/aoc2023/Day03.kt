@@ -31,7 +31,6 @@ class Day03(private val input: List<String>) {
     fun puzzle2(): Long {
         val result = hashMapOf<Point, MutableList<Long>>()
         var number = ""
-        var append = false
 
         val currentGears = hashSetOf<Point>()
 
@@ -40,24 +39,18 @@ class Day03(private val input: List<String>) {
                 val p = Point(x, y)
                 if (p.isDigit) {
                     number += p.value
-                    p.validNeighbours().filter { it.isChar }.forEach {
-                        append = true
-                        if (it.isGear) currentGears.add(it)
-                    }
+                    currentGears.addAll(p.validNeighbours().filter { it.isGear })
                 }
                 if ((!p.isDigit || p.x == maxX) && number.isNotEmpty()) {
-                    if (append && currentGears.isNotEmpty()) {
-                        currentGears.forEach { gear ->
-                            if (gear in result) {
-                                result.getValue(gear).add(number.toLong())
-                            } else {
-                                result[gear] = mutableListOf(number.toLong())
-                            }
+                    currentGears.forEach { gear ->
+                        if (gear in result) {
+                            result.getValue(gear).add(number.toLong())
+                        } else {
+                            result[gear] = mutableListOf(number.toLong())
                         }
                     }
-                    number = ""
-                    append = false
                     currentGears.clear()
+                    number = ""
                 }
             }
         }
