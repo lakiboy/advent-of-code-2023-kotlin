@@ -35,7 +35,7 @@ internal class Day05Test {
 
 //        @Test
 //        fun `solves problem`() {
-//            assertEquals(57_048_494, Day05(problemInput).puzzle2())
+//            assertEquals(20_191_102, Day05(problemInput).puzzle2())
 //        }
     }
 }
