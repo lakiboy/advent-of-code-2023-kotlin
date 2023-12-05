@@ -6,9 +6,10 @@ My solutions (WIP) for the [Advent of Code 2023](https://adventofcode.com/2023) 
 
 ## Puzzles
 
-| Day | Title          | Task                                        | Input                                | Solution                                               | Test                                                     |
-|-----|----------------|---------------------------------------------|--------------------------------------|--------------------------------------------------------|----------------------------------------------------------|
-| 1   | Trebuchet?!    | [Docs](https://adventofcode.com/2023/day/1) | [Text](src/main/resources/day01.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day01.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day01Test.kt) |
-| 2   | Cube Conundrum | [Docs](https://adventofcode.com/2023/day/2) | [Text](src/main/resources/day02.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day02.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day02Test.kt) |
-| 3   | Gear Ratios    | [Docs](https://adventofcode.com/2023/day/3) | [Text](src/main/resources/day03.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day03.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day03Test.kt) |
-| 4   | Scratchcards   | [Docs](https://adventofcode.com/2023/day/4) | [Text](src/main/resources/day04.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day04.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day04Test.kt) |
+| Day | Title                           | Task                                        | Input                                | Solution                                               | Test                                                     |
+|-----|---------------------------------|---------------------------------------------|--------------------------------------|--------------------------------------------------------|----------------------------------------------------------|
+| 1   | Trebuchet?!                     | [Docs](https://adventofcode.com/2023/day/1) | [Text](src/main/resources/day01.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day01.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day01Test.kt) |
+| 2   | Cube Conundrum                  | [Docs](https://adventofcode.com/2023/day/2) | [Text](src/main/resources/day02.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day02.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day02Test.kt) |
+| 3   | Gear Ratios                     | [Docs](https://adventofcode.com/2023/day/3) | [Text](src/main/resources/day03.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day03.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day03Test.kt) |
+| 4   | Scratchcards                    | [Docs](https://adventofcode.com/2023/day/4) | [Text](src/main/resources/day04.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day04.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day04Test.kt) |
+| 5   | If You Give A Seed A Fertilizer | [Docs](https://adventofcode.com/2023/day/5) | [Text](src/main/resources/day05.txt) | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day05.kt) | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day05Test.kt) |
