@@ -4,3 +4,5 @@ formatting:
 style:
   MagicNumber:
     active: false
+  MaxLineLength:
+    maxLineLength: 140
