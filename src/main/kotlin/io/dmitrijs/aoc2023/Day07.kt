@@ -37,22 +37,25 @@ class Day07(private val input: List<String>) {
 
         val one = count[0]
         val two = count[1]
-        val type = when {
-            one == 5 -> FIVE_OF_A_KIND
-            one == 4 -> FOUR_OF_A_KIND
-            one == 3 && two == 2 -> FULL_HOUSE
-            one == 3 -> THREE_OF_A_KIND
-            one == 2 && two == 2 -> TWO_PAIR
-            one == 2 -> ONE_PAIR
-            else -> HIGH_CARD
-        }
 
-        return Hand(type, deck, cards)
+        return Hand(cards, deck) {
+            when {
+                one == 5 -> FIVE_OF_A_KIND
+                one == 4 -> FOUR_OF_A_KIND
+                one == 3 && two == 2 -> FULL_HOUSE
+                one == 3 -> THREE_OF_A_KIND
+                one == 2 && two == 2 -> TWO_PAIR
+                one == 2 -> ONE_PAIR
+                else -> HIGH_CARD
+            }
+        }
     }
 
     private enum class Type { FIVE_OF_A_KIND, FOUR_OF_A_KIND, FULL_HOUSE, THREE_OF_A_KIND, TWO_PAIR, ONE_PAIR, HIGH_CARD }
 
     private data class Hand(private val type: Type, private val deck: String, private val cards: String) : Comparable<Hand> {
+        constructor(cards: String, deck: String, type: () -> Type) : this(type(), deck, cards)
+
         private val rank get() = Type.entries.indexOf(type)
 
         override fun compareTo(other: Hand) =
