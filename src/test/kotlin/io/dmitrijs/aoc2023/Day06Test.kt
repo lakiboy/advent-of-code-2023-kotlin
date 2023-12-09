@@ -37,5 +37,10 @@ internal class Day06Test {
         fun `solves problem`() {
             assertEquals(42_515_755, Day06(problemInput).puzzle2())
         }
+
+        @Test
+        fun `solves problem with brute force`() {
+            assertEquals(42_515_755, Day06(problemInput).puzzle2BruteForce())
+        }
     }
 }
