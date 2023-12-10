@@ -1,98 +1,75 @@
 package io.dmitrijs.aoc2023
 
-class Day10(input: List<String>, guess: Char) {
-    private lateinit var start: Point
-    private val loop: HashSet<Point>
-    private val loopSpaces = hashSetOf<Point>()
-    private var longestDistance: Int = 0
+import io.dmitrijs.aoc2023.Direction.DOWN
+import io.dmitrijs.aoc2023.Direction.LEFT
+import io.dmitrijs.aoc2023.Direction.RIGHT
+import io.dmitrijs.aoc2023.Direction.UP
 
-    private val maxX = input.first().lastIndex
-    private val maxY = input.lastIndex
-    private val matrix = Array(input.size) { y ->
-        CharArray(input[y].length) { x ->
-            if (input[y][x] == 'S') guess.also { start = Point(x, y) } else input[y][x]
-        }
-    }
+class Day10(private val input: List<String>, startDirection: Direction) {
+    private val loop: List<Point>
 
     init {
-        getMainLoop().let { (mainLoop, distance) ->
-            loop = mainLoop
-            longestDistance = distance
-        }
-
-        // Remove rubbish + collect spaces
-        matrix.indices.onEach { y ->
-            matrix[y].indices.onEach { x ->
+        var start = Point(0, 0)
+        input.indices.forEach { y ->
+            input[y].indices.forEach { x ->
                 val p = Point(x, y)
-                if (p !in loop) matrix[y][x] = '.'
-                if (p.space) loopSpaces.add(p)
+                if (p.value == 'S') start = p
             }
         }
-
-        // Debug
-        println("=".repeat(maxX + 1))
-        println(matrix.joinToString("\n") { it.joinToString("") })
+        loop = getMainLoop(start, startDirection)
     }
 
-    fun puzzle1() = longestDistance
+    fun puzzle1() = if (loop.size % 2 == 1) loop.size / 2 + 1 else loop.size / 2
 
+    @Suppress("FunctionOnlyReturningConstant")
     fun puzzle2(): Int {
         return 0
     }
 
-    private val Point.value get() = matrix[y][x]
-    private val Point.space get() = value == '.'
-    private val Point.valid get() = x in 0..maxX && y in 0..maxY
-    private val Point.asPipe get() = Pipe(value)
+    private val Point.value get() = input[y][x]
 
-    private fun getMainLoop(): Pair<HashSet<Point>, Int> {
-        val queue = ArrayDeque(listOf(start to 0))
-        val visited = hashSetOf(start)
-        var longestDistance = 0
+    private fun Point.turn(direction: Direction) = Pipe(value).turn(direction)
 
-        while (queue.isNotEmpty()) {
-            val (node, distance) = queue.removeFirst()
-            val pipe = node.asPipe
+    private fun getMainLoop(start: Point, startDirection: Direction): List<Point> {
+        val loop = mutableListOf<Point>()
+        var node = start
+        var direction = startDirection
 
-            if (distance > longestDistance) longestDistance = distance
+        do {
+            loop.add(node)
+            node += direction
+            if (node != start) direction = node.turn(direction)
+        } while (node != start)
 
-            Direction.entries
-                .map { direction -> direction to (node + direction) }
-                .filter { (direction, neighbour) ->
-                    neighbour.valid && !neighbour.space && neighbour !in visited && pipe.connectsTo(direction, neighbour.asPipe)
-                }
-                .onEach { (_, neighbour) ->
-                    queue.add(neighbour to (distance + 1))
-                    visited.add(neighbour)
-                }
-        }
-
-        return visited to longestDistance
+        return loop
     }
 
     private data class Pipe(private val char: Char) {
-        fun connectsTo(direction: Direction, other: Pipe) = Pair(char, other.char).let { compare ->
-            when (direction) {
-                Direction.UP -> compare in setOf(
-                    '|' to '|', '|' to 'F', '|' to '7',
-                    'L' to '|', 'L' to 'F', 'L' to '7',
-                    'J' to '|', 'J' to 'F', 'J' to '7',
-                )
-                Direction.DOWN -> compare in setOf(
-                    '|' to '|', '|' to 'L', '|' to 'J',
-                    '7' to '|', '7' to 'L', '7' to 'J',
-                    'F' to '|', 'F' to 'L', 'F' to 'J',
-                )
-                Direction.RIGHT -> compare in setOf(
-                    '-' to '-', '-' to '7', '-' to 'J',
-                    'L' to '-', 'L' to '7', 'L' to 'J',
-                    'F' to '-', 'F' to '7', 'F' to 'J',
-                )
-                Direction.LEFT -> compare in setOf(
-                    '-' to '-', '-' to 'L', '-' to 'F',
-                    'J' to '-', 'J' to 'L', 'J' to 'F',
-                    '7' to '-', '7' to 'L', '7' to 'F',
-                )
+        @Suppress("CyclomaticComplexMethod")
+        fun turn(direction: Direction): Direction = when (direction) {
+            RIGHT -> when (char) {
+                '7' -> DOWN
+                'J' -> UP
+                '-' -> RIGHT
+                else -> error("Invalid $direction flow into $char")
+            }
+            LEFT -> when (char) {
+                'F' -> DOWN
+                'L' -> UP
+                '-' -> LEFT
+                else -> error("Invalid $direction flow into $char")
+            }
+            UP -> when (char) {
+                'F' -> RIGHT
+                '7' -> LEFT
+                '|' -> UP
+                else -> error("Invalid $direction flow into $char")
+            }
+            DOWN -> when (char) {
+                'J' -> LEFT
+                'L' -> RIGHT
+                '|' -> DOWN
+                else -> error("Invalid $direction flow into $char")
             }
         }
     }
