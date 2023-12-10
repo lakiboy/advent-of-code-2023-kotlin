@@ -44,6 +44,7 @@ class Day08(input: List<String>) {
     }
 
     private fun lcm(items: List<Long>) = items.reduce { lcm, num -> lcm(lcm, num) }
+
     private fun lcm(a: Long, b: Long) = (a * b) / gcd(a, b)
 
     private fun gcd(a: Long, b: Long): Long {

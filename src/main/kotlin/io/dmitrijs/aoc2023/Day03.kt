@@ -2,7 +2,7 @@ package io.dmitrijs.aoc2023
 
 @Suppress("NestedBlockDepth")
 class Day03(private val input: List<String>) {
-    private val maxX = input.first.lastIndex
+    private val maxX = input.first().lastIndex
     private val maxY = input.lastIndex
 
     fun puzzle1(): Long {

@@ -25,8 +25,8 @@ internal class Day08Test {
                 EEE = (EEE, EEE)
                 GGG = (GGG, GGG)
                 ZZZ = (ZZZ, ZZZ)
-            """.trimIndent()
-            assertEquals(2, Day08(exampleInput.lines()).puzzle1())
+            """.trimIndent().lines()
+            assertEquals(2, Day08(exampleInput).puzzle1())
         }
 
         @Test
@@ -51,8 +51,8 @@ internal class Day08Test {
                 22C = (22Z, 22Z)
                 22Z = (22B, 22B)
                 XXX = (XXX, XXX)
-            """.trimIndent()
-            assertEquals(6, Day08(exampleInput.lines()).puzzle2())
+            """.trimIndent().lines()
+            assertEquals(6, Day08(exampleInput).puzzle2())
         }
 
         @Test
