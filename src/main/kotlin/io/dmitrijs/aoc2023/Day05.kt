@@ -26,7 +26,7 @@ class Day05(input: String) {
     fun puzzle1() = seeds.minOf { it.hash() }
 
     // Apple MacBook Pro M2 Pro ~12m
-    fun puzzle2() = seeds.chunked(2).minOf { (source, range) ->
+    fun puzzle2BruteForce() = seeds.chunked(2).minOf { (source, range) ->
         var result = Long.MAX_VALUE
         var number = source
         val target = number + range
