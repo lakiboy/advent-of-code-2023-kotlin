@@ -8,7 +8,6 @@ import kotlin.test.assertEquals
 
 @DisplayName("Day 10")
 internal class Day10Test {
-    private val exampleInput = resourceAsLines("day10_example")
     private val problemInput = resourceAsLines("day10")
 
     @Nested
@@ -16,12 +15,19 @@ internal class Day10Test {
     inner class Puzzle1 {
         @Test
         fun `solves example`() {
-            assertEquals(8, Day10(exampleInput).puzzle1('F'))
+            val exampleInput = """
+                ..F7.
+                .FJ|.
+                SJ.L7
+                |F--J
+                LJ...
+            """.trimIndent().lines()
+            assertEquals(8, Day10(exampleInput, 'F').puzzle1())
         }
 
         @Test
         fun `solves problem`() {
-            assertEquals(7086, Day10(problemInput).puzzle1('|'))
+            assertEquals(7_086, Day10(problemInput, '|').puzzle1())
         }
     }
 
@@ -30,7 +36,7 @@ internal class Day10Test {
     inner class Puzzle2 {
         @Test
         fun `solves example`() {
-            var exampleInput1 = """
+            val exampleInput1 = """
                 ...........
                 .S-------7.
                 .|F-----7|.
@@ -40,10 +46,9 @@ internal class Day10Test {
                 .|..|.|..|.
                 .L--J.L--J.
                 ...........
-            """.trimIndent()
-            assertEquals(4, Day10(exampleInput1.lines()).puzzle2('F'))
+            """.trimIndent().lines()
 
-            var exampleInput2 = """
+            val exampleInput2 = """
                 ..........
                 .S------7.
                 .|F----7|.
@@ -53,10 +58,9 @@ internal class Day10Test {
                 .|..||..|.
                 .L--JL--J.
                 ..........
-            """.trimIndent()
-            assertEquals(4, Day10(exampleInput2.lines()).puzzle2('F'))
+            """.trimIndent().lines()
 
-            var exampleInput3 = """
+            val exampleInput3 = """
                 .F----7F7F7F7F-7....
                 .|F--7||||||||FJ....
                 .||.FJ||||||||L7....
@@ -67,10 +71,9 @@ internal class Day10Test {
                 .....|FJLJ|FJ|F7|.LJ
                 ....FJL-7.||.||||...
                 ....L---J.LJ.LJLJ...
-            """.trimIndent()
-            assertEquals(8, Day10(exampleInput3.lines()).puzzle2('F'))
+            """.trimIndent().lines()
 
-            var example4 = """
+            val exampleInput4 = """
                 FF7FSF7F7F7F7F7F---7
                 L|LJ||||||||||||F--J
                 FL-7LJLJ||||||LJL-77
@@ -81,14 +84,17 @@ internal class Day10Test {
                 7-L-JL7||F7|L7F-7F7|
                 L.L7LFJ|||||FJL7||LJ
                 L7JLJL-JLJLJL--JLJ.L
-            """.trimIndent()
+            """.trimIndent().lines()
 
-            assertEquals(10, Day10(example4.lines()).puzzle2('7'))
+            assertEquals(4, Day10(exampleInput1, 'F').puzzle2())
+            assertEquals(4, Day10(exampleInput2, 'F').puzzle2())
+            assertEquals(8, Day10(exampleInput3, 'F').puzzle2())
+            assertEquals(10, Day10(exampleInput4, '7').puzzle2())
         }
 
         @Test
         fun `solves problem`() {
-            assertEquals(0, Day10(problemInput).puzzle2('|'))
+            assertEquals(0, Day10(problemInput, 'F').puzzle2())
         }
     }
 }
