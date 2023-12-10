@@ -61,7 +61,7 @@ class Day10(private val input: List<String>) {
         var leakCount = 0
         val newSpaces = spaces.toHashSet()
 
-        val leak = ArrayDeque<Tr<Point, Direction, Boolean>>()
+        val leak = ArrayDeque<Triple<Point, Direction, Boolean>>()
         val totalSpaces = newSpaces.size
 
         val visited = hashSetOf<Point>()
@@ -73,17 +73,20 @@ class Day10(private val input: List<String>) {
             val space = newSpaces.first()
             var isLeak = false
 
+            var junkTiles = 0
             var extraLeaks = 0
             val newVisited = hashSetOf<Point>()
             newVisited.add(space)
 
             leak.clear()
-            leak.add(space to Direction.DOWN)
+            leak.add(Triple(space, Direction.DOWN, false))
             visited.add(space)
 
             while (leak.isNotEmpty()) {
-                val (node, currentDirection) = leak.removeFirst()
+                val (node, currentDirection, currentLeak) = leak.removeFirst()
                 val currentNodeIsSpace = node.value == '.'
+
+                if (currentLeak && node.value == '.') extraLeaks++
 
                 if (!isLeak && node.border && currentNodeIsSpace) {
                     isLeak = true
@@ -93,7 +96,9 @@ class Day10(private val input: List<String>) {
 
                 Direction.entries.map { direction -> direction to node + direction }.filter { (_, neighbour) -> neighbour.valid2 && neighbour !in visited }.forEach { (direction, neighbour) ->
                     if (currentNodeIsSpace && neighbour.value == '.') {
-                        leak.add(neighbour to direction)
+                        // if (currentLeak) extraLeaks++
+
+                        leak.add(Triple(neighbour, direction, false))
                         visited.add(neighbour)
                         newVisited.add(neighbour)
                     } else if (currentNodeIsSpace) {
@@ -107,16 +112,16 @@ class Day10(private val input: List<String>) {
                         }
 
                         if (hasLeaks > 0) {
-                            leak.add(neighbour to direction)
+                            leak.add(Triple(neighbour, direction, currentLeak))
                             visited.add(neighbour)
                             newVisited.add(neighbour)
                         }
                     } else {
                         if (direction == currentDirection) {
                             if (neighbour.value == '.' || node.toPipe().connectsTo(direction, neighbour.toPipe())) {
-                                if (neighbour.value == '.') extraLeaks++
+                                // if (neighbour.value == '.') extraLeaks++
 
-                                leak.add(neighbour to direction)
+                                leak.add(Triple(neighbour, direction, true))
                                 visited.add(neighbour)
                                 newVisited.add(neighbour)
                             }
@@ -125,10 +130,12 @@ class Day10(private val input: List<String>) {
                 }
             }
 
-            leakCount += if (isLeak) newVisited.count { it.value == '.' } else extraLeaks
+            leakCount += if (isLeak) newVisited.filter { it.value == '.' }.onEach { println(it) }.size else extraLeaks
 
             newSpaces.removeAll(newVisited)
         }
+
+        println(visited.size)
 
         return totalSpaces - leakCount
     }
