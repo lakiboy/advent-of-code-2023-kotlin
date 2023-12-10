@@ -30,11 +30,11 @@ internal class Day05Test {
     inner class Puzzle2 {
         @Test
         fun `solves example`() {
-            assertEquals(46, Day05(exampleInput).puzzle2())
+            assertEquals(46, Day05(exampleInput).puzzle2BruteForce())
         }
 
 //        @Test
-//        fun `solves problem`() {
+//        fun `solves problem with brute force`() {
 //            assertEquals(20_191_102, Day05(problemInput).puzzle2())
 //        }
     }
