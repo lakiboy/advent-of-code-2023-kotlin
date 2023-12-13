@@ -5,7 +5,7 @@ class Day11(private val input: List<String>) {
         input[y].indices.mapNotNull { x ->
             Point(x, y).takeIf { it.exists }
         }
-    }.toSet()
+    }
 
     private val emptyX = input.first().indices.mapNotNull { x ->
         if (input.indices.none { y -> Point(x, y).exists }) x else null
@@ -21,14 +21,10 @@ class Day11(private val input: List<String>) {
 
     private fun solve(scale: Int): Long {
         var total = 0L
-        val cache = hashSetOf<Pair<Point, Point>>()
 
-        for (p1 in points) for (p2 in points) {
-            if (p1 == p2 || (p1 to p2) in cache || (p2 to p1) in cache) {
-                continue
-            }
-
-            cache.add(p1 to p2)
+        for (i in 0..<points.lastIndex) for (j in (i + 1)..<points.size) {
+            val p1 = points[i]
+            val p2 = points[j]
 
             val xScale = when {
                 p1.x < p2.x -> (p1.x..p2.x).count { it in emptyX }
