@@ -3,7 +3,6 @@ package io.dmitrijs.aoc2023
 import io.dmitrijs.aoc2023.Resources.resourceAsLines
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -26,7 +25,6 @@ internal class Day12Test {
         }
     }
 
-    @Ignore
     @Nested
     @DisplayName("Puzzle 2")
     inner class Puzzle2 {
@@ -37,7 +35,7 @@ internal class Day12Test {
 
         @Test
         fun `solves problem`() {
-            assertEquals(0, Day12(problemInput).puzzle2())
+            assertEquals(18_716_325_559_999, Day12(problemInput).puzzle2())
         }
     }
 }

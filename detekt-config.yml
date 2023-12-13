@@ -1,6 +1,8 @@
 formatting:
   MaximumLineLength:
     maxLineLength: 140
+  ParameterListWrapping:
+    maxLineLength: 140
 style:
   MagicNumber:
     active: false
