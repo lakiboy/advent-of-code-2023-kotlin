@@ -17,11 +17,13 @@ internal class Day13Test {
         @Test
         fun `solves example`() {
             assertEquals(405, Day13(exampleInput).puzzle1())
+            assertEquals(405, Day13Improved(exampleInput).puzzle1())
         }
 
         @Test
         fun `solves problem`() {
             assertEquals(29_130, Day13(problemInput).puzzle1())
+            assertEquals(29_130, Day13Improved(problemInput).puzzle1())
         }
     }
 
@@ -31,11 +33,13 @@ internal class Day13Test {
         @Test
         fun `solves example`() {
             assertEquals(400, Day13(exampleInput).puzzle2())
+            assertEquals(400, Day13Improved(exampleInput).puzzle2())
         }
 
         @Test
         fun `solves problem`() {
             assertEquals(33_438, Day13(problemInput).puzzle2())
+            assertEquals(33_438, Day13Improved(problemInput).puzzle2())
         }
     }
 }
