@@ -29,8 +29,8 @@ class Day14(input: List<String>) {
                 when (val key = deck.asString()) {
                     in seen -> {
                         val cycle = step - seen.getValue(key)
-                        val cycleLeft = (1_000_000_000 - step) / cycle
-                        step += cycle * cycleLeft
+                        val cyclesLeft = (1_000_000_000 - step) / cycle
+                        step += cycle * cyclesLeft
                         skip = false
                     }
                     else -> seen[key] = step
@@ -46,30 +46,30 @@ class Day14(input: List<String>) {
     private fun tiltUp() {
         for (y in 0..<maxY)
             for (x in 0..<maxX)
-                tilt(Point(x, y), UP)
+                tilt(x, y, UP)
     }
 
     private fun tiltDown() {
-        for (y in (maxY - 1)downTo 0)
+        for (y in (maxY - 1) downTo 0)
             for (x in 0..<maxX)
-                tilt(Point(x, y), DOWN)
+                tilt(x, y, DOWN)
     }
 
     private fun tiltLeft() {
         for (x in 0..<maxX)
             for (y in 0..<maxY)
-                tilt(Point(x, y), LEFT)
+                tilt(x, y, LEFT)
     }
 
     private fun tiltRight() {
-        for (x in (maxX - 1)downTo 0)
+        for (x in (maxX - 1) downTo 0)
             for (y in 0..<maxY)
-                tilt(Point(x, y), RIGHT)
+                tilt(x, y, RIGHT)
     }
 
-    private fun tilt(point: Point, direction: Direction) {
-        var p = point
-        var n = point + direction
+    private fun tilt(x: Int, y: Int, direction: Direction) {
+        var p = Point(x, y)
+        var n = p + direction
         while (p.value == 'O' && n.valid && n.value == '.') {
             p.value = '.'
             n.value = 'O'
