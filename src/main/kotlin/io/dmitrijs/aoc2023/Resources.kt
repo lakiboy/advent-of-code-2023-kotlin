@@ -8,10 +8,6 @@ internal object Resources {
 
     fun resourceAsLines(fileName: String): List<String> = File(fileName.toURI()).readLines()
 
-    fun resourceAsListOfInt(fileName: String) = resourceAsLines(fileName).map(String::toInt)
-
-    fun resourceAsListOfLong(fileName: String) = resourceAsLines(fileName).map(String::toLong)
-
     private fun String.toURI(): URI =
         Resources.javaClass.getResource("/$this.txt")
             ?.toURI()
