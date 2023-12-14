@@ -1,27 +1,27 @@
 package io.dmitrijs.aoc2023
 
-import io.dmitrijs.aoc2023.Resources.resourceAsListOfInt
+import io.dmitrijs.aoc2023.Resources.resourceAsLines
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @DisplayName("Day 0")
-internal class Day00Test {
-    private val exampleInput = resourceAsListOfInt("day00_example")
-    private val problemInput = resourceAsListOfInt("day00")
+internal class Day14Test {
+    private val exampleInput = resourceAsLines("day14_example")
+    private val problemInput = resourceAsLines("day14")
 
     @Nested
     @DisplayName("Puzzle 1")
     inner class Puzzle1 {
         @Test
         fun `solves example`() {
-            assertEquals(6, Day00(exampleInput).puzzle1())
+            assertEquals(136, Day14(exampleInput).puzzle1())
         }
 
         @Test
         fun `solves problem`() {
-            assertEquals(15, Day00(problemInput).puzzle1())
+            assertEquals(113_456, Day14(problemInput).puzzle1())
         }
     }
 
@@ -30,12 +30,12 @@ internal class Day00Test {
     inner class Puzzle2 {
         @Test
         fun `solves example`() {
-            assertEquals(3, Day00(exampleInput).puzzle2())
+            assertEquals(64, Day14(exampleInput).puzzle2())
         }
 
         @Test
         fun `solves problem`() {
-            assertEquals(5, Day00(problemInput).puzzle2())
+            assertEquals(118_747, Day14(problemInput).puzzle2())
         }
     }
 }
