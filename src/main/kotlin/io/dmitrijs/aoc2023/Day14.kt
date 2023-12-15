@@ -8,9 +8,7 @@ import io.dmitrijs.aoc2023.Direction.UP
 class Day14(input: List<String>) {
     private val maxY = input.size
     private val maxX = input.first().length
-    private val deck = Array(maxY) { y ->
-        CharArray(maxX) { x -> input[y][x] }
-    }
+    private val deck = Array(maxY) { y -> input[y].toCharArray() }
 
     fun puzzle1() = tiltUp().let { deck.score }
 
