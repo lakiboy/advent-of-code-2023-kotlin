@@ -32,10 +32,14 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags = setOf(getProperty("TEST_IGNORE_TAG", "playground"))
+    }
 }
 
 detekt {
     config.from(files("detekt-config.yml"))
     buildUponDefaultConfig = true
 }
+
+fun getProperty(key: String, default: String = ""): String = System.getenv(key) ?: default

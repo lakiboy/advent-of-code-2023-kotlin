@@ -3,39 +3,40 @@ package io.dmitrijs.aoc2023
 import io.dmitrijs.aoc2023.Resources.resourceAsLines
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Tag
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @DisplayName("Day 7")
 internal class Day07Test {
-    private val exampleInput = resourceAsLines("day07_example")
-    private val problemInput = resourceAsLines("day07")
-
     @Nested
-    @DisplayName("Puzzle 1")
-    inner class Puzzle1 {
+    inner class Example {
+        private val day = Day07(resourceAsLines("day07_example"))
+
         @Test
-        fun `solves example`() {
-            assertEquals(6_440, Day07(exampleInput).puzzle1())
+        fun puzzle1() {
+            assertEquals(6_440, day.puzzle1())
         }
 
         @Test
-        fun `solves problem`() {
-            assertEquals(246_409_899, Day07(problemInput).puzzle1())
+        fun puzzle2() {
+            assertEquals(5_905, day.puzzle2())
         }
     }
 
     @Nested
-    @DisplayName("Puzzle 2")
-    inner class Puzzle2 {
+    @Tag("personal")
+    inner class Problem {
+        private val day = Day07(resourceAsLines("day07"))
+
         @Test
-        fun `solves example`() {
-            assertEquals(5_905, Day07(exampleInput).puzzle2())
+        fun puzzle1() {
+            assertEquals(246_409_899, day.puzzle1())
         }
 
         @Test
-        fun `solves problem`() {
-            assertEquals(244_848_487, Day07(problemInput).puzzle2())
+        fun puzzle2() {
+            assertEquals(244_848_487, day.puzzle2())
         }
     }
 }

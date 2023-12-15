@@ -4,6 +4,8 @@ jobs:
     resource_class: medium
     docker:
       - image: cimg/openjdk:21.0.0
+    environment:
+      TEST_IGNORE_TAG: personal
     steps:
       - checkout
       - run: java --version

@@ -40,7 +40,7 @@ class Day05(input: String) {
             .apply {
                 if (input.first < overallMin) add(input.first..min(overallMin - 1, input.last))
                 if (input.last > overallMax) add(max(overallMax + 1, input.first)..input.last)
-                if (isEmpty()) add(input)
+                if (isEmpty()) add(input) // Do I have broken input?
             }
             .flatMap { range -> mapRange(range, target) }
     }

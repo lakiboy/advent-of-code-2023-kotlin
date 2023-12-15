@@ -2,14 +2,20 @@ package io.dmitrijs.aoc2023
 
 import io.dmitrijs.aoc2023.Direction.UP
 
-class Day14(input: List<String>) {
+class Day14(private val input: List<String>) {
     private val maxY = input.size
     private val maxX = input.first().length
-    private var deck = Array(maxY) { y -> input[y].toCharArray() }
+    private lateinit var deck: Array<CharArray>
 
-    fun puzzle1() = tiltUp().let { deck.score }
+    fun puzzle1(): Int {
+        deck = Array(maxY) { y -> input[y].toCharArray() }
+
+        return tiltUp().let { deck.score }
+    }
 
     fun puzzle2(): Int {
+        deck = Array(maxY) { y -> input[y].toCharArray() }
+
         var step = 0
         var skip = true
         val seen = hashMapOf<String, Int>()
@@ -68,7 +74,7 @@ class Day14(input: List<String>) {
     private fun Array<CharArray>.asString() = joinToString("\n") { it.joinToString("") }
 
     private val Array<CharArray>.score get() = indices.fold(0) { acc, y ->
-        acc + deck[y].count { it == 'O' } * (maxY - y)
+        acc + this[y].count { it == 'O' } * (maxY - y)
     }
 
     private val Point.valid get() = x in 0..<maxX && y in 0..<maxY
