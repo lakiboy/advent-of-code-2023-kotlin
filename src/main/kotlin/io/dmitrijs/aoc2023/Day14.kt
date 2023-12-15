@@ -1,14 +1,11 @@
 package io.dmitrijs.aoc2023
 
-import io.dmitrijs.aoc2023.Direction.DOWN
-import io.dmitrijs.aoc2023.Direction.LEFT
-import io.dmitrijs.aoc2023.Direction.RIGHT
 import io.dmitrijs.aoc2023.Direction.UP
 
 class Day14(input: List<String>) {
     private val maxY = input.size
     private val maxX = input.first().length
-    private val deck = Array(maxY) { y -> input[y].toCharArray() }
+    private var deck = Array(maxY) { y -> input[y].toCharArray() }
 
     fun puzzle1() = tiltUp().let { deck.score }
 
@@ -18,10 +15,10 @@ class Day14(input: List<String>) {
         val seen = hashMapOf<String, Int>()
 
         while (step < 1_000_000_000) {
-            tiltUp()
-            tiltLeft()
-            tiltDown()
-            tiltRight()
+            repeat(4) {
+                tiltUp()
+                deck = deck.rotate() // Instead of rotate() methods tiltLeft(), tiltDown(), tiltRight() could be used.
+            }
 
             if (skip) {
                 when (val key = deck.asString()) {
@@ -44,28 +41,10 @@ class Day14(input: List<String>) {
     private fun tiltUp() {
         for (y in 0..<maxY)
             for (x in 0..<maxX)
-                tilt(x, y, UP)
+                tilt(x, y)
     }
 
-    private fun tiltDown() {
-        for (y in (maxY - 1) downTo 0)
-            for (x in 0..<maxX)
-                tilt(x, y, DOWN)
-    }
-
-    private fun tiltLeft() {
-        for (x in 0..<maxX)
-            for (y in 0..<maxY)
-                tilt(x, y, LEFT)
-    }
-
-    private fun tiltRight() {
-        for (x in (maxX - 1) downTo 0)
-            for (y in 0..<maxY)
-                tilt(x, y, RIGHT)
-    }
-
-    private fun tilt(x: Int, y: Int, direction: Direction) {
+    private fun tilt(x: Int, y: Int, direction: Direction = UP) {
         var p = Point(x, y)
         var n = p + direction
         while (p.value == 'O' && n.valid && n.value == '.') {
@@ -74,6 +53,16 @@ class Day14(input: List<String>) {
             p = n
             n = p + direction
         }
+    }
+
+    private fun Array<CharArray>.rotate(): Array<CharArray> {
+        val rotated = Array(maxX) { CharArray(maxY) }
+
+        for (y in 0..<maxY)
+            for (x in 0..<maxX)
+                rotated[x][maxY - 1 - y] = this[y][x]
+
+        return rotated
     }
 
     private fun Array<CharArray>.asString() = joinToString("\n") { it.joinToString("") }
@@ -89,4 +78,22 @@ class Day14(input: List<String>) {
         set(value) {
             deck[y][x] = value
         }
+
+//    private fun tiltDown() {
+//        for (y in (maxY - 1) downTo 0)
+//            for (x in 0..<maxX)
+//                tilt(x, y, DOWN)
+//    }
+//
+//    private fun tiltLeft() {
+//        for (x in 0..<maxX)
+//            for (y in 0..<maxY)
+//                tilt(x, y, LEFT)
+//    }
+//
+//    private fun tiltRight() {
+//        for (x in (maxX - 1) downTo 0)
+//            for (y in 0..<maxY)
+//                tilt(x, y, RIGHT)
+//    }
 }
