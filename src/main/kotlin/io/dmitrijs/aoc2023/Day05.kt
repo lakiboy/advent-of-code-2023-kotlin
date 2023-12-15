@@ -1,60 +1,66 @@
 package io.dmitrijs.aoc2023
 
+import kotlin.math.max
+import kotlin.math.min
+
 class Day05(input: String) {
-    private val hashingMap = hashMapOf<String, Pair<String, Set<HashingRange>>>()
-    private val seeds: List<Long>
+    private val seeds = input
+        .substringBefore("\n\n")
+        .substringAfter(": ")
+        .split(" ")
+        .map(String::toLong)
 
-    init {
-        val blocks = input.split("\n\n")
-        seeds = blocks.first().split(": ")[1].split(" ").map(String::toLong)
-
-        blocks.drop(1).forEach { block ->
+    private val rangesMap = hashMapOf<String, Pair<String, List<MappingRange>>>().apply {
+        input.split("\n\n").drop(1).forEach { block ->
             val lines = block.trimEnd().split("\n")
-            val (source, _, target) = lines.first().split(" ").first().split("-")
-            val hashing = lines
-                .drop(1)
-                .map { line ->
-                    line.split(" ")
-                        .map(String::toLong)
-                        .let { (target, source, range) -> HashingRange(source, target, range) }
-                }.toSet()
-
-            hashingMap[source] = target to hashing
+            val (source, _, target) = lines.first().substringBefore(" ").split("-")
+            val ranges = lines.drop(1).map { MappingRange.of(it) }.sortedBy { it.first }
+            this[source] = target to ranges
         }
     }
 
-    fun puzzle1() = seeds.minOf { it.hash() }
-
-    // Apple MacBook Pro M2 Pro ~12m
-    fun puzzle2BruteForce() = seeds.chunked(2).minOf { (source, range) ->
-        var result = Long.MAX_VALUE
-        var number = source
-        val target = number + range
-
-        do {
-            val value = number.hash()
-            if (result > value) result = value
-        } while (++number < target)
-
-        result
+    fun puzzle1() = seeds.minOf { n ->
+        mapRange(n..n).minOf { it.first }
     }
 
-    private fun Long.hash(): Long {
-        var phase = "seed"
-        var value = this
-
-        do {
-            val (target, hashing) = hashingMap.getValue(phase)
-            hashing.firstOrNull { value in it }?.let { value = it.hash(value) }
-            phase = target
-        } while (phase != "location")
-
-        return value
+    fun puzzle2() = seeds.chunked(2).minOf { (n, l) ->
+        mapRange(n..<n + l).minOf { it.first }
     }
 
-    private data class HashingRange(val source: Long, val target: Long, val range: Long) {
-        operator fun contains(num: Long) = num in source until (source + range)
+    private fun mapRange(input: LongRange, phase: String = "seed"): List<LongRange> {
+        if (phase == "location") return listOf(input)
 
-        fun hash(num: Long) = num + (target - source)
+        val (target, mappings) = rangesMap.getValue(phase)
+        val overallMin = mappings.first().first
+        val overallMax = mappings.last().last
+
+        return mappings
+            .mapNotNull { mappingRange -> mappingRange.remap(input) }
+            .toMutableList()
+            .apply {
+                if (input.first < overallMin) add(input.first..min(overallMin - 1, input.last))
+                if (input.last > overallMax) add(max(overallMax + 1, input.first)..input.last)
+                if (isEmpty()) add(input)
+            }
+            .flatMap { range -> mapRange(range, target) }
+    }
+
+    private data class MappingRange(private val range: LongRange, private val delta: Long) {
+        val first get() = range.first
+        val last get() = range.last
+
+        fun remap(other: LongRange): LongRange? {
+            val min = max(first, other.first) + delta
+            val max = min(last, other.last) + delta
+
+            return if (min <= max) min..max else null
+        }
+
+        companion object {
+            fun of(line: String) = line
+                .split(" ")
+                .map(String::toLong)
+                .let { (to, from, len) -> MappingRange(from..<from + len, to - from) }
+        }
     }
 }
