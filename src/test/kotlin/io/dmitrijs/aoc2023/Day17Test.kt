@@ -38,6 +38,7 @@ internal class Day17Test {
     @Tag("personal")
     inner class Problem {
         private val day = Day17(resourceAsLines("day17"))
+        private val day17Simplified = Day17Simplified(resourceAsLines("day17"))
 
         @Test
         fun puzzle1() {
@@ -45,8 +46,18 @@ internal class Day17Test {
         }
 
         @Test
+        fun puzzle1Simplified() {
+            assertEquals(698, day17Simplified.puzzle1())
+        }
+
+        @Test
         fun puzzle2() {
             assertEquals(825, day.puzzle2())
+        }
+
+        @Test
+        fun puzzle2Simplified() {
+            assertEquals(825, day17Simplified.puzzle2())
         }
     }
 }

@@ -4,6 +4,8 @@ formatting:
   ParameterListWrapping:
     maxLineLength: 140
 style:
+  DestructuringDeclarationWithTooManyEntries:
+    maxDestructuringEntries: 5
   MagicNumber:
     active: false
   MaxLineLength:
