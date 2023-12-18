@@ -25,7 +25,7 @@ java {
 
 tasks.withType<KotlinCompile> {
     compilerOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-opt-in=kotlin.ExperimentalStdlibApi")
         jvmTarget = JvmTarget.JVM_21
         languageVersion = KotlinVersion.KOTLIN_1_9
     }
