@@ -40,11 +40,11 @@ class Day18(private val input: List<String>) {
         return len + innerArea
     }
 
-    private fun gaussArea(pp: List<Point>): Long {
-        val last = pp.lastIndex
+    private fun gaussArea(points: List<Point>): Long {
+        val last = points.lastIndex
         val area = (0..<last).fold(0L) { acc, i ->
-            acc + pp[i].x.toLong() * pp[i + 1].y - pp[i + 1].x.toLong() * pp[i].y
-        } + pp[last].x.toLong() * pp[0].y - pp[0].x.toLong() * pp[last].y
+            acc + points[i].x.toLong() * points[i + 1].y - points[i + 1].x.toLong() * points[i].y
+        } + points[last].x.toLong() * points[0].y - points[0].x.toLong() * points[last].y
 
         return abs(area) / 2
     }
