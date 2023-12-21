@@ -46,7 +46,7 @@ internal class Day20Test {
 
         @Test
         fun puzzle2() {
-            assertEquals(0, day.puzzle2())
+            assertEquals(219_388_737_656_593, day.puzzle2())
         }
     }
 }
