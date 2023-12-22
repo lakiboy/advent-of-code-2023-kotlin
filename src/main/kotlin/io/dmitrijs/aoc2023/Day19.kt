@@ -48,6 +48,29 @@ class Day19(input: String) {
 
     @Suppress("FunctionOnlyReturningConstant")
     fun puzzle2(): Long {
+        println(workflowMap)
+
+        // digraph {
+        //    a -> b[label="0.2",weight="0.2"];
+        //    a -> c[label="0.4",weight="0.4"];
+        //    c -> b[label="0.6",weight="0.6"];
+        //    c -> e[label="0.6",weight="0.6"];
+        //    e -> e[label="0.1",weight="0.1"];
+        //    e -> b[label="0.7",weight="0.7"];
+        // }
+
+        // px{a<2006:qkq,m>2090:A,rfg}
+        // pv{a>1716:R,A}
+        // lnx{m>1548:A,A}
+        // rfg{s<537:gd,x>2440:R,A}
+        // qs{s>3448:A,lnx}
+        // qkq{x<1416:A,crn}
+        // crn{x>2662:A,R}
+        // in{s<1351:px,qqz}
+        // qqz{s>2770:qs,m<1801:hdj,R}
+        // gd{a>3333:R,R}
+        // hdj{m>838:A,pv}
+
         return 0L
     }
 
