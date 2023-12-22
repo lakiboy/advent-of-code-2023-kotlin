@@ -18,6 +18,9 @@ class Day21(private val input: List<String>) {
         val points = visitedPointsMap()
 
         // 26501365 = 65 + (202300 * 131)
+        //  > 131 - board side;
+        //  > 65 - steps till the edge from starting position;
+        //  > 202300 - additional boards in each direction.
         val n = ((steps - (input.size / 2)) / input.size).toLong()
         require(n == 202_300L)
 
