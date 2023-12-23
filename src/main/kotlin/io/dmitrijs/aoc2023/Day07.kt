@@ -25,7 +25,6 @@ class Day07(private val input: List<String>) {
         return hands.withIndex().sumOf { (index, hand) -> (index + 1) * hand.second }
     }
 
-    @Suppress("CyclomaticComplexMethod")
     private fun recognize(cards: String, deck: String): Hand {
         val joker = deck.last() == JOKER
         val count = deck.map { card -> cards.count { (!joker && card == it) || (joker && card == it && card != JOKER) } }

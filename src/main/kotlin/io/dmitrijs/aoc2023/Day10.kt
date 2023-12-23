@@ -68,7 +68,6 @@ class Day10(private val input: List<String>, startDirection: Direction) {
     }
 
     private data class Pipe(private val char: Char) {
-        @Suppress("CyclomaticComplexMethod")
         fun turn(direction: Direction): Direction = when (direction) {
             RIGHT -> when (char) {
                 '7' -> DOWN

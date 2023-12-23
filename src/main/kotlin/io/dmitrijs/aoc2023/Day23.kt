@@ -42,6 +42,7 @@ class Day23(private val input: List<String>) {
         return maxDist
     }
 
+    // ~12s
     fun puzzle2(): Int {
         val (nodes, graph) = getJunctionGraph()
         val queue = ArrayDeque<Triple<Point, Long, Int>>().apply { add(Triple(start, 1L, 0)) }

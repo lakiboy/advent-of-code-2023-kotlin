@@ -15,7 +15,6 @@ class Day12(private val input: List<String>) {
         calculateByGroups(pattern, pockets.split(',').map(String::toInt))
     }
 
-    @Suppress("CyclomaticComplexMethod")
     private fun calculateByGroups(pattern: String, pockets: List<Int>, cache: HashMap<String, Long> = hashMapOf()): Long {
         val cacheKey = pattern + pockets.toString()
         if (cacheKey in cache) return cache.getValue(cacheKey)

@@ -4,6 +4,10 @@ import io.dmitrijs.aoc2023.Day19.Expr.Accept
 import io.dmitrijs.aoc2023.Day19.Expr.Compare
 import io.dmitrijs.aoc2023.Day19.Expr.Jump
 import io.dmitrijs.aoc2023.Day19.Expr.Reject
+import kotlin.math.max
+import kotlin.math.min
+
+private typealias VariableRanges = List<Pair<Int, Int>>
 
 class Day19(input: String) {
     private val environments = input.substringAfter("\n\n").trimEnd().lines().map { line ->
@@ -15,7 +19,7 @@ class Day19(input: String) {
     }
 
     private val workflowMap = input.substringBefore("\n\n").lines().associate { line ->
-        line.substringBefore('{') to line.substringAfter('{').trimEnd('}').split(',').map { it.toExpr() }
+        line.substringBefore('{') to line.substringAfter('{').trimEnd('}').split(',')
     }
 
     fun puzzle1() = environments.sumOf { env ->
@@ -26,7 +30,10 @@ class Day19(input: String) {
         }
 
         var accept = false
-        val expressions = workflowMap.getValue("in").toMutableList()
+        val expressions = workflowMap
+            .getValue("in")
+            .map { it.toExpr() }
+            .toMutableList()
 
         do {
             when (val expr = expressions.removeFirst()) {
@@ -38,7 +45,7 @@ class Day19(input: String) {
                 }
                 is Jump -> {
                     expressions.clear()
-                    expressions.addAll(workflowMap.getValue(expr.next))
+                    expressions.addAll(workflowMap.getValue(expr.next).map { it.toExpr() })
                 }
             }
         } while (!accept)
@@ -46,32 +53,53 @@ class Day19(input: String) {
         if (accept) env.values.sum() else 0L
     }
 
-    @Suppress("FunctionOnlyReturningConstant")
-    fun puzzle2(): Long {
-        println(workflowMap)
+    fun puzzle2() = traverseRanges("in", List(4) { 1 to 4_000 })
 
-        // digraph {
-        //    a -> b[label="0.2",weight="0.2"];
-        //    a -> c[label="0.4",weight="0.4"];
-        //    c -> b[label="0.6",weight="0.6"];
-        //    c -> e[label="0.6",weight="0.6"];
-        //    e -> e[label="0.1",weight="0.1"];
-        //    e -> b[label="0.7",weight="0.7"];
-        // }
+    private fun splitRanges(expr: String, ranges: VariableRanges): Pair<VariableRanges, VariableRanges> {
+        val (name, split) = expr
+            .substringBefore(':')
+            .split('<', '>')
+            .let { (n, v) -> n to v.toInt() }
+        val index = "xmas".indexOf(name)
+        val range = ranges[index]
 
-        // px{a<2006:qkq,m>2090:A,rfg}
-        // pv{a>1716:R,A}
-        // lnx{m>1548:A,A}
-        // rfg{s<537:gd,x>2440:R,A}
-        // qs{s>3448:A,lnx}
-        // qkq{x<1416:A,crn}
-        // crn{x>2662:A,R}
-        // in{s<1351:px,qqz}
-        // qqz{s>2770:qs,m<1801:hdj,R}
-        // gd{a>3333:R,R}
-        // hdj{m>838:A,pv}
+        return when {
+            '>' in expr -> {
+                val l = ranges.toMutableList().apply { this[index] = max(range.first, split + 1) to range.second }
+                val r = ranges.toMutableList().apply { this[index] = range.first to min(range.second, split) }
+                l to r
+            }
+            '<' in expr -> {
+                val l = ranges.toMutableList().apply { this[index] = range.first to min(range.second, split - 1) }
+                val r = ranges.toMutableList().apply { this[index] = max(range.first, split) to range.second }
+                l to r
+            }
+            else -> error("Invalid expression '$expr'.")
+        }
+    }
 
-        return 0L
+    private fun traverseRanges(workflow: String, ranges: VariableRanges): Long = when (workflow) {
+        "R" -> 0L
+        "A" -> ranges.variations()
+        else -> {
+            var result = 0L
+            val expressions = workflowMap.getValue(workflow)
+            var currentRanges = ranges
+
+            for (index in 0..<expressions.lastIndex) {
+                val (left, right) = splitRanges(expressions[index], currentRanges)
+                if (left.variations() > 0) {
+                    result += traverseRanges(expressions[index].substringAfter(':'), left)
+                }
+                currentRanges = right
+            }
+
+            result + traverseRanges(expressions.last(), currentRanges)
+        }
+    }
+
+    private fun VariableRanges.variations() = fold(1L) { acc, range ->
+        acc * (if (range.second < range.first) 0 else (range.second - range.first + 1))
     }
 
     private fun String.toExpr(): Expr = when {
