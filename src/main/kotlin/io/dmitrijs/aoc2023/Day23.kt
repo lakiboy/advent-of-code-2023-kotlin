@@ -43,13 +43,15 @@ class Day23(private val input: List<String>) {
     }
 
     fun puzzle2(): Int {
-        val graph = getJunctionGraph()
-        val queue = ArrayDeque<Pair<Set<Point>, Int>>().apply { add(setOf(start) to 0) }
+        val (nodes, graph) = getJunctionGraph()
+        val queue = ArrayDeque<Triple<Point, Long, Int>>().apply { add(Triple(start, 1L, 0)) }
         var maxDist = -1
 
+        // Using mask as path doubles the performance.
+        val masks = nodes.withIndex().associate { (index, node) -> node to (1L shl index) }
+
         while (queue.isNotEmpty()) {
-            val (path, dist) = queue.removeLast()
-            val node = path.last()
+            val (node, path, dist) = queue.removeFirst()
 
             if (node == finish) {
                 maxDist = max(maxDist, dist)
@@ -57,16 +59,16 @@ class Day23(private val input: List<String>) {
             }
 
             graph
-                .filter { (from, till) -> node == from && till !in path }
+                .filter { (from, till) -> node == from && (masks.getValue(till) and path) == 0L }
                 .forEach { (_, till, d) ->
-                    queue.add(path.toMutableSet().apply { add(till) } to dist + d)
+                    queue.add(Triple(till, path or masks.getValue(till), dist + d))
                 }
         }
 
         return maxDist
     }
 
-    private fun getJunctionGraph(): List<Edge> {
+    private fun getJunctionGraph(): Pair<List<Point>, List<Edge>> {
         val junctions = input.flatMapIndexed { y, line ->
             line.indices.mapNotNull { x ->
                 Point(x, y).takeIf { p ->
@@ -109,7 +111,7 @@ class Day23(private val input: List<String>) {
             }
         }
 
-        return edges
+        return nodes to edges
     }
 
     private val Point.value get() = input[y][x]
