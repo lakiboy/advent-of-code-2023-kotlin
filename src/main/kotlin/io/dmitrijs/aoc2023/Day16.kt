@@ -21,7 +21,6 @@ class Day16(private val input: List<String>) {
         (0..<maxY).maxOf { y -> getBeamVisits(Point(maxX - 1, y) to RIGHT) },
     ).max()
 
-    @Suppress("CyclomaticComplexMethod")
     private fun getBeamVisits(start: DirectedPoint): Int {
         val queue = ArrayDeque<DirectedPoint>().apply { add(start) }
         val visited = hashSetOf<DirectedPoint>()

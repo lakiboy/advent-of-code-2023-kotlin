@@ -1,3 +1,6 @@
+complexity:
+  CyclomaticComplexMethod:
+    threshold: 25
 formatting:
   MaximumLineLength:
     maxLineLength: 140
