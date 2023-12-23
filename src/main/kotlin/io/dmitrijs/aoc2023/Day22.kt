@@ -9,7 +9,7 @@ class Day22(input: List<String>) {
             a = Point3d.of(line.substringBefore('~')),
             b = Point3d.of(line.substringAfter('~')),
         )
-    }.sortedBy { it.minZ }.toMutableList()
+    }.sorted().toMutableList()
 
     init {
         bricks.indices.forEach { i ->
@@ -27,7 +27,7 @@ class Day22(input: List<String>) {
     }
 
     private fun List<Brick>.safeToRemove() = filter { brick ->
-        bricks.filter { brick.below(it) }.all { above ->
+        bricks.filter { brick.surfaceFor(it) }.all { above ->
             bricks.any { it != brick && it.surfaceFor(above) }
         }
     }
@@ -46,21 +46,21 @@ class Day22(input: List<String>) {
 
     private fun Brick.canFall() = minZ > 1 && bricks.none { it.surfaceFor(this) }
 
-    private data class Brick(private val a: Point3d, private val b: Point3d) {
+    private data class Brick(private val a: Point3d, private val b: Point3d) : Comparable<Brick> {
         val minZ get() = min(a.z, b.z)
         val maxZ get() = max(a.z, b.z)
 
         fun fall() = copy(a = a.fall(), b = b.fall())
 
-        fun below(other: Brick) = this != other && maxZ == other.minZ - 1
-
-        fun surfaceFor(other: Brick) = below(other) && flatIntersects(other)
+        fun surfaceFor(other: Brick) = this != other && maxZ == other.minZ - 1 && flatIntersects(other)
 
         fun flatIntersects(other: Brick) = when {
             (a.x > other.b.x || b.x < other.a.x) -> false
             (a.y > other.b.y || b.y < other.a.y) -> false
             else -> true
         }
+
+        override fun compareTo(other: Brick) = minZ - other.minZ
 
         private fun Point3d.fall() = copy(z = z - 1)
     }
