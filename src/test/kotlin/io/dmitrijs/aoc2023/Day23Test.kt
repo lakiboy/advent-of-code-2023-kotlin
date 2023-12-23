@@ -20,7 +20,7 @@ internal class Day23Test {
 
         @Test
         fun puzzle2() {
-            assertEquals(0, day.puzzle1())
+            assertEquals(154, day.puzzle2())
         }
     }
 
@@ -31,12 +31,12 @@ internal class Day23Test {
 
         @Test
         fun puzzle1() {
-            assertEquals(0, day.puzzle1())
+            assertEquals(2_130, day.puzzle1())
         }
 
         @Test
         fun puzzle2() {
-            assertEquals(0, day.puzzle2())
+            assertEquals(5018, day.puzzle2()) // 5018
         }
     }
 }
