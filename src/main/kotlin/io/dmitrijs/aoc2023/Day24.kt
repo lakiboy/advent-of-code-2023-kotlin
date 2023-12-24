@@ -1,93 +1,59 @@
 package io.dmitrijs.aoc2023
 
-import kotlin.math.max
-import kotlin.math.min
-
 class Day24(input: List<String>) {
-    private val stones = input.map { line ->
+    private val lines = input.map { line ->
         val (pos, vel) = line.split(" @ ")
-        Stone(Point3d.of(pos), Point3d.of(vel))
+        LineCoefficients.of(Point3d.of(pos), Point3d.of(vel))
     }
 
-    fun puzzle1(range: LongRange, iter: Int): Int {
-        val segment = Line.of(range)
-        val movingStones = stones.toMutableList()
-        val intersections = mutableSetOf<Pair<Point3d, Point3d>>()
+    fun puzzle1(range: LongRange): Int {
+        var result = 0
 
-        repeat(iter) { index ->
-            if (index % 100_000 == 0) {
-                println("Iter $index; Size: ${intersections.size}")
-            }
-
-            for (i in 0..<movingStones.lastIndex) for (j in (i + 1)..<movingStones.size) {
-                val s1 = movingStones[i]
-                val s2 = movingStones[j]
-
-                s1.intersection(s2)
-                    ?.takeIf { it in segment }
-                    ?.let { intersections.add(s1.pos to s2.pos) }
-            }
-
-            for (i in movingStones.indices) {
-                movingStones[i] = movingStones[i].move()
-            }
+        for (i in 0..<lines.lastIndex) for (j in (i + 1)..<lines.size) {
+            lines[i].intersection(lines[j])
+                ?.also { println("Line $i / Line $j in $it") }
+                ?.takeIf { it in range }
+                ?.also { println("in") }
+                ?.let { result++ }
         }
 
-        return intersections.size
+        return result
     }
 
     fun puzzle2(): Long {
         return 0L
     }
 
-    private data class Stone(val pos: Point3d, val cur: Point3d, val vel: Point3d) {
-        constructor(pos: Point3d, vel: Point3d) : this(pos, pos, vel)
+    private operator fun LongRange.contains(point: Pair<Double, Double>) =
+        point.first >= start && point.first <= endInclusive && point.second >= start && point.second <= endInclusive
 
-        val line2d get() = Line(
-            x1 = min(pos.x, cur.x).toDouble(),
-            x2 = max(pos.x, cur.x).toDouble(),
-            y1 = min(pos.y, cur.y).toDouble(),
-            y2 = max(pos.y, cur.y).toDouble(),
-        )
-
-        fun move() = copy(cur = cur + vel)
-
-        fun intersection(other: Stone): Pair<Double, Double>? {
-            val (x1, y1) = pos
-            val (x2, y2) = cur
-            val (x3, y3) = other.pos
-            val (x4, y4) = other.cur
-
-            val determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    private data class LineCoefficients(val a: Double, val b: Double, val c: Double) {
+        fun intersection(other: LineCoefficients): Pair<Double, Double>? {
+            val determinant = a * other.b - other.a * b
 
             // Lines are parallel.
-            if (determinant == 0L) return null
+            if (determinant == 0.0) return null
 
-            val px = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant.toDouble()
-            val py = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant.toDouble()
-            val p = px to py
+            val x = (other.b * c - b * other.c) / determinant
+            val y = (a * other.c - other.a * c) / determinant
 
-            return p.takeIf { it in line2d && it in other.line2d }
-        }
-    }
-
-    private data class Line(val x1: Double, val x2: Double, val y1: Double, val y2: Double) {
-        init {
-            require(x1 <= x2)
-            require(y1 <= y2)
-        }
-
-        operator fun contains(point: Pair<Double, Double>) = with(point) {
-            first in x1..x2 && second in y1..y2
+            return x to y
         }
 
         companion object {
-            fun of(range: LongRange) = Line(
-                x1 = range.first.toDouble(),
-                x2 = range.last.toDouble(),
-                y1 = range.first.toDouble(),
-                y2 = range.last.toDouble(),
-            )
+            fun of(pos: Point3d, vel: Point3d): LineCoefficients {
+                val (x1, y1) = pos
+                val (x2, y2) = pos + vel
+
+                val slope = (y2.toDouble() - y1) / (x2 - x1)
+
+                // Calculate coefficients A and B for the line Ax + By = C
+                val a = -slope
+                val b = 1.0
+                val c = slope * x1 - y1
+
+                return LineCoefficients(a, b, c)
+            }
         }
     }
 
