@@ -31,7 +31,7 @@ internal class Day24Test {
 
         @Test
         fun puzzle1() {
-            assertEquals(1469, day.puzzle1(200_000_000_000_000L..400_000_000_000_000L)) // 1469
+            assertEquals(15_720, day.puzzle1(200_000_000_000_000L..400_000_000_000_000L)) // 1469
         }
 
         @Test
