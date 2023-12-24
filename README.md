@@ -2,7 +2,7 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/lakiboy/advent-of-code-2023-kotlin.svg?style=svg&circle-token=6d4e4a5bdf4f0e2902c4d54750ff1d7df65cda5c)](https://dl.circleci.com/status-badge/redirect/gh/lakiboy/advent-of-code-2023-kotlin/tree/main)
 
-My solutions (WIP) for the [Advent of Code 2023](https://adventofcode.com/2023) puzzles in [Kotlin](https://kotlinlang.org).
+My solutions for the [Advent of Code 2023](https://adventofcode.com/2023) puzzles in [Kotlin](https://kotlinlang.org).
 
 ## Puzzles
 
@@ -31,3 +31,4 @@ My solutions (WIP) for the [Advent of Code 2023](https://adventofcode.com/2023) 
 | 21  | Step Counter                    | [Docs](https://adventofcode.com/2023/day/21) | [Text](src/test/resources/day21_example.txt)                                                        | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day21.kt)                                                                        | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day21Test.kt) |
 | 22  | Sand Slabs                      | [Docs](https://adventofcode.com/2023/day/22) | [Text](src/test/resources/day22_example.txt)                                                        | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day22.kt)                                                                        | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day22Test.kt) |
 | 23  | A Long Walk                     | [Docs](https://adventofcode.com/2023/day/23) | [Text](src/test/resources/day23_example.txt)                                                        | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day23.kt)                                                                        | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day23Test.kt) |
+| 24  | Never Tell Me The Odds (WIP)    | [Docs](https://adventofcode.com/2023/day/24) | [Text](src/test/resources/day24_example.txt)                                                        | [Source](src/main/kotlin/io/dmitrijs/aoc2023/Day24.kt)                                                                        | [Test](src/test/kotlin/io/dmitrijs/aoc2023/Day24Test.kt) |
