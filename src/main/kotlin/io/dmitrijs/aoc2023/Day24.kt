@@ -18,9 +18,51 @@ class Day24(input: List<String>) {
         return result
     }
 
-    @Suppress("FunctionOnlyReturningConstant")
     fun puzzle2(): Long {
-        return 0L
+        // rSx - start X position for rock
+        // rSy - start Y position for rock
+        // rSz - start Z position for rock
+        // rVx - X velocity for rock
+        // rVy - Y velocity for rock
+        // rVz - Z velocity for rock
+
+        // s<i>Sx - start X position for stone i
+        // s<i>Sy - start Y position for stone i
+        // s<i>Sz - start Z position for stone i
+        // s<i>Vx - X velocity for stone i
+        // s<i>Vy - Y velocity for stone i
+        // s<i>Vz - Z velocity for stone i
+
+        // To solve:
+        //
+        // (rSx - s1Sx) / (s1Vx - rVx) = (rSy - s1Sy) / (s1Vy - rVy) = (rSz - s1Sz) / (s1Vz - rVz)
+        // (rSx - s2Sx) / (s2Vx - rVx) = (rSy - s2Sy) / (s2Vy - rVy) = (rSz - s2Sz) / (s2Vz - rVz)
+        // (rSx - s3Sx) / (s3Vx - rVx) = (rSy - s3Sy) / (s3Vy - rVy) = (rSz - s3Sz) / (s3Vz - rVz)
+        //
+        // (rSx - s1Sx) * (s1Vy - rVy) - (rSy - s1Sy) * (s1Vx - rVx) = 0
+        // (rSy - s1Sy) * (s1Vz - rVz) - (rSz - s1Sz) * (s1Vy - rVy) = 0
+        // (rSx - s2Sx) * (s2Vy - rVy) - (rSy - s2Sy) * (s2Vx - rVx) = 0
+        // (rSy - s2Sy) * (s2Vz - rVz) - (rSz - s2Sz) * (s2Vy - rVy) = 0
+        // (rSx - s3Sx) * (s3Vy - rVy) - (rSy - s3Sy) * (s3Vx - rVx) = 0
+        // (rSy - s3Sy) * (s3Vz - rVz) - (rSz - s3Sz) * (s3Vy - rVy) = 0
+
+        stones.take(3).forEach { stone ->
+            val (sx, sy, sz) = stone.pos
+            val (vx, vy, vz) = stone.vel
+
+            val expr = """
+                (rSx - $sx) * ($vy - rVy) - (rSy - $sy) * ($vx - rVx) = 0
+                (rSy - $sy) * ($vz - rVz) - (rSz - $sz) * ($vy - rVy) = 0
+            """.trimIndent()
+            println(expr)
+        }
+
+        // Demo solved here - https://quickmath.com/webMathematica3/quickmath/equations/solve/advanced.jsp
+        // Result: (24, 13, 10) to (-3, 1, 2) = 47
+
+        // Problem solved with Python & sympy
+        // Result: (191537613659010, 238270932096689, 137106090006865) to (206, 70, 247)
+        return 191_537_613_659_010L + 238_270_932_096_689L + 137_106_090_006_865L
     }
 
     private operator fun LongRange.contains(point: Pair<Double, Double>) = with(point) {
