@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     implementation("com.github.shiguruikai:combinatoricskt:1.6.0")
+    implementation("tools.aqua:z3-turnkey:4.12.2.1")
     testImplementation(kotlin("test"))
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4")
 }

@@ -1,5 +1,11 @@
 package io.dmitrijs.aoc2023
 
+import com.microsoft.z3.Context
+import com.microsoft.z3.IntNum
+import com.microsoft.z3.RatNum
+import com.microsoft.z3.Status
+import kotlin.math.roundToLong
+
 class Day24(input: List<String>) {
     private val stones = input.map { line ->
         val (pos, vel) = line.split(" @ ")
@@ -18,6 +24,15 @@ class Day24(input: List<String>) {
         return result
     }
 
+    /**
+     * Solved with Z3 - https://github.com/Z3Prover/z3.
+     *
+     * Previous iterations:
+     *   - Example manually solved here - https://quickmath.com/webMathematica3/quickmath/equations/solve/advanced.jsp
+     *     Result: (24, 13, 10) to (-3, 1, 2) = 47
+     *   - Problem initially solved with Python & sympy
+     *     Result: (191537613659010, 238270932096689, 137106090006865) to (206, 70, 247)
+     */
     fun puzzle2(): Long {
         // rSx - start X position for rock
         // rSy - start Y position for rock
@@ -46,10 +61,39 @@ class Day24(input: List<String>) {
         // (rSx - s3Sx) * (s3Vy - rVy) - (rSy - s3Sy) * (s3Vx - rVx) = 0
         // (rSy - s3Sy) * (s3Vz - rVz) - (rSz - s3Sz) * (s3Vy - rVy) = 0
 
-        stones.take(3).forEach { stone ->
+        val ctx = Context()
+        val solver = ctx.mkSolver()
+        val consts = listOf("rSx", "rSy", "rSz", "rVx", "rVy", "rVz")
+        val symbols = consts.associateWith { sym -> ctx.mkRealConst(ctx.mkSymbol(sym)) }
+
+        stones.take(5).forEach { stone ->
             val (sx, sy, sz) = stone.pos
             val (vx, vy, vz) = stone.vel
 
+            solver.add(
+                ctx.mkEq(
+                    ctx.mkMul(
+                        ctx.mkSub(symbols["rSx"]!!, ctx.mkInt(sx)),
+                        ctx.mkSub(ctx.mkInt(vy), symbols["rVy"]!!),
+                    ),
+                    ctx.mkMul(
+                        ctx.mkSub(symbols["rSy"]!!, ctx.mkInt(sy)),
+                        ctx.mkSub(ctx.mkInt(vx), symbols["rVx"]!!),
+                    ),
+                ),
+                ctx.mkEq(
+                    ctx.mkMul(
+                        ctx.mkSub(symbols["rSy"]!!, ctx.mkInt(sy)),
+                        ctx.mkSub(ctx.mkInt(vz), symbols["rVz"]!!),
+                    ),
+                    ctx.mkMul(
+                        ctx.mkSub(symbols["rSz"]!!, ctx.mkInt(sz)),
+                        ctx.mkSub(ctx.mkInt(vy), symbols["rVy"]!!),
+                    ),
+                ),
+            )
+
+            // For sympy
             val expr = """
                 (rSx - $sx) * ($vy - rVy) - (rSy - $sy) * ($vx - rVx) = 0
                 (rSy - $sy) * ($vz - rVz) - (rSz - $sz) * ($vy - rVy) = 0
@@ -57,12 +101,17 @@ class Day24(input: List<String>) {
             println(expr)
         }
 
-        // Demo solved here - https://quickmath.com/webMathematica3/quickmath/equations/solve/advanced.jsp
-        // Result: (24, 13, 10) to (-3, 1, 2) = 47
+        require(solver.check() == Status.SATISFIABLE) { "Solver expressions are not satisfiable." }
 
-        // Problem solved with Python & sympy
-        // Result: (191537613659010, 238270932096689, 137106090006865) to (206, 70, 247)
-        return 191_537_613_659_010L + 238_270_932_096_689L + 137_106_090_006_865L
+        val answers = consts.map { sym ->
+            when (val res = solver.model.getConstInterp(symbols[sym]!!)) {
+                is IntNum -> res.int64
+                is RatNum -> res.toString().toDouble().roundToLong()
+                else -> error("Unsupported result for '$sym' symbol.")
+            }
+        }
+
+        return answers.subList(0, 3).sum()
     }
 
     private operator fun LongRange.contains(point: Pair<Double, Double>) = with(point) {
